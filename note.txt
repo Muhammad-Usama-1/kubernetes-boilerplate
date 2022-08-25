@@ -1,0 +1,65 @@
+-------------------------------------------------------------------
+In kubernetes the smallest unit is Pod in which we have a container or containers depending upon
+the condition if two containers are tightly coupled and need to be in the same pod
+-------------------------------------------------------------------
+
+Kubernetes has three type of services
+1) ClusterIp (accessable within node)
+2) NodePort (accessable from anynode ip and alloccated node of NodePort)
+3) LoadBalancer (Provided by cloud provider)
+-------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------------
+ By default, kubernetes assumes that a POD or a container
+ within a POD requires .5 CPU & 256 Mebibyte of memory. we can change
+
+resources:
+    requests:
+        memory: "128Mi"
+        cpu: "500m"
+
+BY default Kubernetes sets a limit of 1vCPU to containers. So if you do not specify
+explicitly, a container will be limited to consume only 1 vCPU from the Node limit of 512 Mebibyte on
+containers..
+  limits:
+    memory: "2Gi"
+    cpu: "1000m"
+
+So what happens when a pod tries to exceed resources beyond its specified limit. In
+case of the CPU, kubernetes throttles the CPU so that it does not go beyond the
+specified limit. A container cannot use more CPU resources than its limit. However,
+this is not the case with memory. A container CAN use more memory resources that
+its limit. So if a pod tries to consume more memory than its limit constantly, the POD
+will be terminated.
+
+
+-------------------------------------------------------------------
+TAIN POD
+kubectl taint nodes node-name key=value:taint-effect
+                                       NoShedule|PreferNoShedule:NoExecute
+e.g 
+kubectl taint nodes node-1 app=blue:NoExecute
+
+TOLERATE POD
+
+in alighn with containers
+               tolerations:
+                 - key : "app"
+                   operator: "Equal"
+                   value: blue 
+                   effect: NoExecute
+
+
+k describe node kubemaster | grep Taint
+
+
+To install only mysql (client) you should execute
+yum install mysql
+To install mysql client and mysql server:
+yum install mysql mysql-server
+
+mysql -u username -h mysql_server_ip -p

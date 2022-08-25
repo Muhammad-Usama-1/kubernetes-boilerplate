@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  # will be use as (selector)  if you create a service for pods (which is not recommended) plz use deployments
+  name: my-app
+spec:
+  containers:
+    - name: c1
+      image: redis123

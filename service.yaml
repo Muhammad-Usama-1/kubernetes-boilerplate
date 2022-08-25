@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  # By default will be clusterIp
+  type: NodePort
+  ports:
+    - targetPort: 80
+      # Port on service object (mandatory)
+      port: 80
+      nodePort: 30008
+  selector:
+    app: myapp
+    type: frontend

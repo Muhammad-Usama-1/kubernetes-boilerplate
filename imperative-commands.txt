@@ -1,0 +1,16 @@
+#For Getting object in any nam-space 
+k -n namespace get <object>
+k -n frontend get service
+It will list all service in frontend namespace
+
+k get deploy <deployment-name> - o yaml > deploy.yaml
+We can do this with other object for getting yaml outout 
+
+k describe node kubemaster | grep Taint
+
+AKIATJTNWPDT6E44W7WY
+
+b1jjBbqS+q/WosjJ8a7Fe1WV9G9028Tmx3uDkdjn
+
+aws eks --region us-east-1 describe-cluster --name katra-cluster --query cluster.status
+aws eks --region us-east-1 update-kubeconfig --name katra-cluster

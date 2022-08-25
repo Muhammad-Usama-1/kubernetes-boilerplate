@@ -1,0 +1,149 @@
+# Simple Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: busybox-pod
+  template:
+    metadata:
+      labels:
+        # Shoulb be match with the matchLabels in selector
+        name: busybox-pod
+    spec:
+      containers:
+        - name: busybox-container
+          image: busybox888
+
+---
+# ----------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: busybox-pod
+  template:
+    metadata:
+      labels:
+        # Shoulb be match with the matchLabels in selector
+        name: busybox-pod
+    spec:
+      containers:
+        - name: busybox-container
+          image: busybox888
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+              imagePullPolicy: IfNotPresent
+
+# ------------------------------------------
+
+# Single environment value
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: busybox-pod
+  template:
+    metadata:
+      labels:
+        # Shoulb be match with the matchLabels in selector
+        name: busybox-pod
+    spec:
+      containers:
+        - name: busybox-container
+          image: busybox888
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+              imagePullPolicy: IfNotPresent
+          # every value will be available in container of app-config
+          env:
+            - name: app-env
+              value: "development"
+            - name: app-env2
+              value: "production"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: busybox-pod
+  template:
+    metadata:
+      labels:
+        # Shoulb be match with the matchLabels in selector
+        name: busybox-pod
+    spec:
+      containers:
+        - name: busybox-container
+          image: busybox888
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+              imagePullPolicy: IfNotPresent
+          # every value will be available in container of app-config
+          envFrom:
+            - configMapRef:
+                name: app-config
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: busybox-pod
+  template:
+    metadata:
+      labels:
+        # Shoulb be match with the matchLabels in selector
+        name: busybox-pod
+    spec:
+      containers:
+        - name: busybox-container
+          image: busybox888
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+              imagePullPolicy: IfNotPresent
+          # single value from a configmap i.e will be available in container of app-config
+          env:
+            - name: APP_COLOR
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_COLOR
